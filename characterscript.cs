@@ -26,6 +26,7 @@ public class characterscript : MonoBehaviour
 	//camera stuff
 	public Vector3 camrotation;
 	public Vector3 lookdirection;
+	public GameObject cameraobject;
 
 	// Use this for initialization. YEAH DUH UNITY I GET IT
 	void Start( )
@@ -35,15 +36,16 @@ public class characterscript : MonoBehaviour
 		movespeed = 15;
 		speedcap = 30;
 		camrotation = Vector3.zero;
+		cameraobject = transform.FindChild("playercamera").gameObject;
 	}
 
 	// Update is called once per frame FIXED UPDATE IS BETTER FOR PHYSICS STUFF!
 	void FixedUpdate( )
 	{
 		//CAMERA
-		lookdirection = transform.rotation.eulerAngles;
+		lookdirection = cameraobject.transform.rotation.eulerAngles;
 		lookdirection = new Vector3(lookdirection.x, lookdirection.y + (BoolToInt(Input.GetKey(KeyCode.RightArrow)) - BoolToInt(Input.GetKey(KeyCode.LeftArrow))), lookdirection.z);
-		transform.rotation = Quaternion.Euler(lookdirection);
+		cameraobject.transform.rotation = Quaternion.Euler(lookdirection);
 
 
 		//MOVE
@@ -54,8 +56,8 @@ public class characterscript : MonoBehaviour
 		targetspeed = new Vector3(0, 0, 0);
 
 		//Read movement keys
-		targetspeed += transform.forward * (BoolToInt(Input.GetKey(KeyCode.W)) - BoolToInt(Input.GetKey(KeyCode.S)));
-		targetspeed += transform.right * (BoolToInt(Input.GetKey(KeyCode.D)) - BoolToInt(Input.GetKey(KeyCode.A)));
+		targetspeed += cameraobject.transform.forward * (BoolToInt(Input.GetKey(KeyCode.W)) - BoolToInt(Input.GetKey(KeyCode.S)));
+		targetspeed += cameraobject.transform.right * (BoolToInt(Input.GetKey(KeyCode.D)) - BoolToInt(Input.GetKey(KeyCode.A)));
 
 		//sprinting?
 		if ((Input.GetKey(KeyCode.LeftShift)) || (Input.GetKey(KeyCode.RightShift))) {
